@@ -1,80 +1,61 @@
-# U-Bot Pro: Unrestricted Local AI Chatbot
+# ⚡ U-Bot Pro: Elite Unrestricted IUDE
 
-**U-Bot Pro** is a minimalist, high-performance AI chatbot interface built with Python and CustomTkinter. It leverages **Ollama** to run uncensored models like `dolphin-llama3` locally on your machine, ensuring total privacy and freedom from typical AI content restrictions.
+**U-Bot Pro** is a high-performance, Integrated Unrestricted Development Environment (IUDE) designed for power users and researchers working with local Large Language Models. It provides a streamlined, glassmorphism-inspired interface for executing and managing AI-generated logic with zero safety filters.
 
-## 🚀 Key Features
+## 🚀 Overview
 
-* **Unrestricted & Uncensored**: Built for use with "abliterated" models, allowing for responses without ethical or safety filters.
-* **Privacy First**: Chat history is saved in your local `AppData` folder, keeping your private conversations out of your GitHub repositories.
-* **Flicker-Free Theme Toggling**: Instant switching between Dark and Light modes using modern Tuple Color logic to prevent GUI lag or window closing.
-* **Window-in-Window Code Blocks**: Automatically detects code and presents it in a dedicated "Code Box" with a one-click copy button.
-* **Intelligent History Management**: Each session is automatically saved with a unique ID; sessions can be reloaded, continued, or deleted via the sidebar.
-* **Personalized Experience**: Automatically greets you by your Windows username upon launch.
+U-Bot Pro bridges the gap between local LLMs and functional software development. It offers a secure environment to generate, test, and execute code instantly, featuring real-time system telemetry and an adaptive security engine.
 
----
+## 🛠️ Key Features
 
-## 🛠️ Prerequisites
+* **Dual-Mode Persona Toggle**: Instant switching between `RESTRICTED` (Safety-first) and `UNRESTRICTED` (Zero-filter) system logic via a dedicated header pill.
+* **Unified IUDE Interface**: A professional-grade dark theme featuring a collapsible navigation drawer for a focused workspace.
+* **Integrated Python Sandbox**: Execute AI-generated code snippets in a secure local environment with real-time STDOUT/STDERR logging.
+* **Live System Analytics**: Real-time monitoring of CPU and RAM usage to effectively manage local LLM resource consumption.
+* **Void-Terminal**: A dedicated console for debugging, system logs, and background process tracking.
 
-* **Ollama**: [Download here](https://ollama.com).
-* **Python 3.10+**: [Download here](https://www.python.org/).
-* **Uncensored Model**:
+## 📦 Installation & Setup
+
+### 1. Prerequisites
+
+* **Python 3.11+**: Ensure Python is installed and added to your system PATH.
+* **Ollama**: The backend engine required to run models locally.
+
+### 2. Dependency Installation
+
+Install the necessary Python libraries via terminal:
+
 ```bash
-ollama run dolphin-llama3
+pip install customtkinter ollama pillow psutil pyperclip
 
 ```
 
+### 3. Model Configuration
 
+Pull the optimized **Dolphin-Llama3** model via Ollama:
 
----
-
-## 📦 Installation
-
-1. **Clone the repository**:
 ```bash
-git clone https://github.com/YourUsername/U-Bot-Unrestricted_ChatBot.git
-cd U-Bot-Unrestricted_ChatBot
+ollama pull dolphin-llama3
 
 ```
 
+## 🖥️ Usage Guide
 
-2. **Install dependencies**:
-Ensure you install them for your specific Python executable:
-```bash
-python -m pip install customtkinter ollama pyperclip
+1. **Initialize**: Ensure the Ollama service is active.
+2. **Launch**: Run the main script: `python U-Bot.py`.
+3. **Configure**: Use the top-right pill button to set your desired restriction level before sending commands.
+4. **Execute**: Enter instructions in the pill-shaped input bar and monitor the terminal for output.
 
-```
+## 📂 Project Structure
 
+* **`/chats`**: Persistent storage for session history.
+* **`/bin`**: Secure vault for saved Python scripts and binaries.
+* **`sys_config.json`**: Local configuration file for user preferences and persona settings.
 
+## ⚠️ Disclaimer
 
----
-
-## 🚦 Usage
-
-1. Ensure **Ollama** is running in the background.
-2. Run the application:
-```bash
-python U-Bot.py
-
-```
-
-
-3. **Toggle Theme**: Use the sidebar button to switch modes without flickering.
-4. **Request Code**: Type keywords like `python` or `script` to trigger the special Code Box rendering.
+U-Bot Pro is intended for research and development purposes. The "Unrestricted" mode bypasses standard AI safety filters. Users are solely responsible for ensuring that all generated content and executed code comply with local laws and ethical standards.
 
 ---
 
-## 💻 Hardware Optimization (For Ryzen APUs)
-
-For users with hardware like the **Ryzen 7 5700G**, performance can be boosted by:
-
-* **Increasing VRAM**: Set your BIOS "UMA Frame Buffer" to 8GB or higher.
-* **Environment Variables**: Set `OLLAMA_VULKAN=1` in Windows to force GPU acceleration.
-* **RAM Management**: Close high-resource apps like browsers while the AI is thinking.
-
----
-
-## 📝 License
-
-This project is open-source. Use responsibly. By using local uncensored models, you assume full responsibility for the output generated.
-
----
+*Developed for the next generation of unrestricted AI interaction.*
