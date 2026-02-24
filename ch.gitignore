@@ -1,0 +1,3 @@
+chats/
+__pycache__/
+*.json
