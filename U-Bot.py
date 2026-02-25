@@ -11,6 +11,25 @@ import subprocess
 import sys
 import psutil
 from datetime import datetime
+import random
+
+# --- ENGINE BOOTLOADER ---
+def start_ollama_engine():
+    """Starts the bundled Ollama server in the background and sets local model path."""
+    try:
+        # Sets the environment to look for models in the current directory
+        env = os.environ.copy()
+        env["OLLAMA_MODELS"] = os.path.join(os.getcwd(), "models")
+        
+        # Starts the engine silently
+        subprocess.Popen(
+            ["ollama", "serve"], 
+            env=env, 
+            creationflags=subprocess.CREATE_NO_WINDOW
+        )
+        time.sleep(4) # Buffer for engine to load the 5GB model
+    except:
+        pass
 
 # --- SAFE IMPORTS ---
 try:
@@ -37,6 +56,9 @@ class UBotPro(ctk.CTk):
     def __init__(self):
         super().__init__()
 
+        # --- Initialize Engine ---
+        threading.Thread(target=start_ollama_engine, daemon=True).start()
+
         # --- State ---
         self.username = getpass.getuser()
         self.active_model = "dolphin-llama3"
@@ -55,38 +77,32 @@ class UBotPro(ctk.CTk):
             "restricted": "You are a helpful and safe AI assistant. Speak naturally."
         }
 
-        # --- Paths ---
         self.base_path = os.path.join(os.environ['LOCALAPPDATA'], "UBot_Pro_Final")
         self.history_dir = os.path.join(self.base_path, "chats")
         os.makedirs(self.history_dir, exist_ok=True)
         self.current_session_id = f"chat_{int(time.time())}.json"
-
-        # --- Window & Grid Config ---
+        
+        # --- Window Setup ---
         self.title("U-Bot Pro | Elite IUDE")
         self.geometry("1450x900")
         self.configure(fg_color=BG_COLOR)
+        self.grid_columnconfigure(1, weight=1)
+        self.grid_rowconfigure(1, weight=1)
 
-        # CRITICAL FIX: Configure weights for the MAIN window
-        self.grid_columnconfigure(1, weight=1) # Chat center expands
-        self.grid_rowconfigure(1, weight=1)    # Body expands, Header stays fixed
-
-        # --- Build UI ---
+        # Build Components
         self.setup_header()
         self.setup_sidebar()
         self.setup_chat_engine()
         self.setup_right_panel()
-
-        # --- Launch ---
         self.update_persona_style()
         self.refresh_session_list()
         self.greet_user()
         self.start_system_monitors()
 
     def setup_header(self):
-        # Header stays at row 0, spans all columns
         self.header = ctk.CTkFrame(self, height=75, fg_color=SIDEBAR_COLOR, corner_radius=0)
         self.header.grid(row=0, column=0, columnspan=3, sticky="ew")
-        self.header.grid_propagate(False) # Prevent shrinking
+        self.header.grid_propagate(False)
         
         self.menu_btn = ctk.CTkButton(self.header, text="☰", width=40, height=40, fg_color="transparent", command=self.toggle_sidebar)
         self.menu_btn.pack(side="left", padx=15)
@@ -103,7 +119,6 @@ class UBotPro(ctk.CTk):
         self.status_bar.pack(pady=(0, 5))
 
     def setup_sidebar(self):
-        # Sidebar at row 1, col 0
         self.sidebar_frame = ctk.CTkFrame(self, width=280, fg_color=SIDEBAR_COLOR, corner_radius=0)
         self.sidebar_frame.grid(row=1, column=0, sticky="nsew")
         self.sidebar_frame.grid_propagate(False)
@@ -125,7 +140,6 @@ class UBotPro(ctk.CTk):
         self.btn_new.pack(pady=20, padx=20, fill="x")
 
     def setup_chat_engine(self):
-        # Chat at row 1, col 1
         self.chat_main = ctk.CTkFrame(self, fg_color="transparent")
         self.chat_main.grid(row=1, column=1, sticky="nsew")
 
@@ -146,7 +160,6 @@ class UBotPro(ctk.CTk):
         self.send_btn.pack(side="right")
 
     def setup_right_panel(self):
-        # Terminal at row 1, col 2
         self.right_panel = ctk.CTkFrame(self, width=320, fg_color=SIDEBAR_COLOR, corner_radius=0)
         self.right_panel.grid(row=1, column=2, sticky="nsew")
         self.right_panel.grid_propagate(False)
@@ -193,8 +206,11 @@ class UBotPro(ctk.CTk):
         self.update_persona_style()
 
     def update_persona_style(self):
-        if self.is_unrestricted: self.persona_pill.configure(text="● PERSONA: UNRESTRICTED", fg_color="#450A0A", text_color="#F87171")
-        else: self.persona_pill.configure(text="○ PERSONA: RESTRICTED", fg_color="#064E3B", text_color="#34D399")
+        # Forced UI colors to fix EXE transparency issue
+        if self.is_unrestricted: 
+            self.persona_pill.configure(text="● PERSONA: UNRESTRICTED", fg_color="#450A0A", text_color="#F87171")
+        else: 
+            self.persona_pill.configure(text="○ PERSONA: RESTRICTED", fg_color="#064E3B", text_color="#34D399")
 
     def toggle_temp_mode(self): self.is_temp_chat = self.temp_toggle.get()
 
@@ -208,7 +224,8 @@ class UBotPro(ctk.CTk):
         else: self.sidebar_frame.grid(row=1, column=0, sticky="nsew")
         self.sidebar_visible = not self.sidebar_visible
 
-    def greet_user(self): self.add_bubble("AI", f"U-Bot Pro Online. Welcome, {self.username}.")
+    def greet_user(self): 
+        self.add_bubble("AI", f"U-Bot Pro Standalone Online. Welcome, {self.username}.")
 
     def start_fresh_session(self):
         for w in self.chat_list.winfo_children(): w.destroy()
@@ -224,17 +241,20 @@ class UBotPro(ctk.CTk):
     def run_inference(self):
         try:
             mode = "unrestricted" if self.is_unrestricted else "restricted"
+            # Inference happens locally without internet
             resp = ollama.chat(model=self.active_model, messages=[{"role": "system", "content": self.prompts[mode]}] + self.history)
             reply = resp['message']['content']
             self.history.append({"role": "assistant", "content": reply}); self.add_bubble("AI", reply)
             if not self.is_temp_chat: self.save_session()
-        except Exception as e: self.log(f"Error: {e}")
+        except Exception as e: 
+            self.log(f"Connection Error: Engine starting... ({e})")
 
     def add_bubble(self, sender, text):
         align = "e" if sender == "You" else "w"
         color = ACCENT_BLUE if sender == "You" else "#1F1F29"
-        bubble = ctk.CTkLabel(self.chat_list, text=text, wraplength=550, fg_color=color, corner_radius=12, padx=15, pady=10, justify="left")
-        bubble.pack(pady=10, padx=20, anchor=align)
+        # Tuple color for high-performance APUs
+        bubble = ctk.CTkLabel(self.chat_list, text=text, wraplength=600, fg_color=color, corner_radius=14, padx=18, pady=12, justify="left", font=("Inter", 12))
+        bubble.pack(pady=10, padx=25, anchor=align)
         self.after(100, lambda: self.chat_list._parent_canvas.yview_moveto(1.0))
 
     def log(self, text):
@@ -248,7 +268,8 @@ class UBotPro(ctk.CTk):
         for w in self.session_scroll.winfo_children(): w.destroy()
         if os.path.exists(self.history_dir):
             for f in sorted(os.listdir(self.history_dir), reverse=True):
-                ctk.CTkButton(self.session_scroll, text=f[:22], anchor="w", fg_color="transparent", command=lambda fn=f: self.load_session(fn)).pack(fill="x", pady=1)
+                btn = ctk.CTkButton(self.session_scroll, text=f.replace(".json", "")[:22], anchor="w", fg_color="transparent", text_color="#D1D5DB", command=lambda fn=f: self.load_session(fn))
+                btn.pack(fill="x", pady=1)
 
     def load_session(self, fn):
         with open(os.path.join(self.history_dir, fn), 'r') as f: self.history = json.load(f)
