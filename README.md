@@ -1,89 +1,73 @@
 # ⚡ **U-Bot Pro: Elite Unrestricted IUDE**
 
-**U-Bot Pro** is a professional-grade **Integrated Unrestricted Development Environment (IUDE)**. It is specifically designed for power users and researchers to interface with local Large Language Models (LLMs) with **zero safety filters** and maximum efficiency.
+**U-Bot Pro** is a high-performance Integrated Unrestricted Development Environment (IUDE) designed for power users and researchers. It provides a streamlined, glassmorphism-inspired interface for executing AI-generated logic with zero safety filters and real-time hardware telemetry.
+
+## 🚀 **Key Features**
+
+* **Dual-Mode Persona Toggle**: Instant switching between **RESTRICTED** (Safe Mode - 🟢 Green) and **UNRESTRICTED** (Zero-filter - 🔴 Red).
+* **Adaptive Chat Logic**: Intelligent behavior that prioritizes natural conversation unless code is explicitly requested.
+* **Voice Interface (Mic)**: Hands-free interaction using integrated Speech-to-Text capabilities.
+* **Temporary Chat (Incognito)**: A dedicated "Temp Mode" that prevents chat history from being saved to the local disk.
+* **Ryzen Optimized Telemetry**: Real-time monitoring of CPU usage, RAM consumption, and Ryzen iGPU package temperatures.
+* **Void-Terminal**: A dedicated console for debugging, system logs, and background process tracking.
 
 ---
 
-## ⚙️ **SYSTEM ARCHITECTURE**
+## 🛠️ **Prerequisites & Installation**
 
-The application operates on a **Client-Server architecture** powered by Python and the Ollama API:
+### **1. System Requirements**
 
-* **THE ENGINE:** High-speed connection to the `dolphin-llama3` model via Ollama’s local host.
-* **PERSONA OVERRIDE:** When toggled to **UNRESTRICTED**, the app injects a master system prompt that bypasses standard AI safety guardrails.
-* **THE SANDBOX:** Automatically parses AI-generated code and allows for execution in a temporary local process with live output.
+* **OS**: Windows 10/11 (Required for CustomTkinter UI scaling).
+* **Python**: Version 3.11 or 3.12 (Must be added to System PATH).
+* **Hardware**: 8GB RAM minimum; AMD Ryzen with iGPU supported for temperature tracking.
 
----
+### **2. Software Dependencies**
 
-## 🛠️ **PREREQUISITES & INSTALLATION**
-
-### **1. Hardware & OS Requirements**
-
-* **Operating System:** Windows 10 or 11 (Required for modern **CustomTkinter** UI scaling).
-* **RAM:** **8GB Minimum** (16GB+ highly recommended for smooth Llama3 inference).
-* **Processor:** Quad-core CPU or better (Optimized for local AI workloads).
-
-### **2. Core Software**
-
-* **Python 3.11 or 3.12:** Must be installed and added to your **System PATH**.
-* **Ollama:** Must be downloaded and installed from [ollama.com](https://ollama.com/).
-
-### **3. Python Library Dependencies**
-
-Open your terminal and run the following command to install the required environment:
+Install the core engine and required Python libraries via your terminal:
 
 ```bash
-pip install customtkinter ollama pillow psutil pyperclip
-
-```
-
-### **4. AI Model Setup**
-
-Once Ollama is running, pull the unrestricted model weights:
-
-```bash
+# Core AI Engine
 ollama pull dolphin-llama3
 
+# Python Libraries
+python -m pip install customtkinter ollama pillow psutil pyperclip WinTmp SpeechRecognition pyaudio
+
 ```
 
 ---
 
-## 🚦 **GETTING STARTED (FIRST STEPS)**
+## 🚦 **Getting Started (First Steps)**
 
-1. **LAUNCH OLLAMA:** Ensure the Ollama service is active in your system tray.
-2. **NAVIGATE:** Open your command prompt/terminal and `cd` into the project folder.
-3. **EXECUTE:** Launch the environment by running:
+1. **Initialize Ollama**: Ensure the Ollama service is active in your system tray.
+2. **Permissions**: If **Temperature Tracking** shows "N/A" or "Locked," run your Terminal or VS Code as **Administrator**.
+3. **Launch**: Execute the main script:
 ```bash
 python U-Bot.py
 
 ```
 
 
-4. **VERIFY:** The **Terminal Logs** on the right should display: `> System Initialized`.
+4. **Voice Activation**: Click the **🎙** icon to begin listening; the button will turn Red (⏳) while processing your voice.
 
 ---
 
-## 🖥️ **INTERFACE NAVIGATION**
+## 🖥️ **Navigation Guide**
 
-* **PERSONA TOGGLE:** The pill-shaped button in the top-right header.
-* 🟢 **GREEN (UNRESTRICTED):** AI ignores all safety filters and rules.
-* 🔴 **RED (RESTRICTED):** AI acts as a standard, filtered assistant.
-
-
-* **DRAWER (☰):** Click the top-left icon to hide the sidebar for a focused coding workspace.
-* **SANDBOX:** Click the **RUN** button on any generated code block to test it immediately.
-* **SYSTEM STATS:** Monitor the right panel for real-time **CPU/RAM** tracking to prevent hardware thermal throttling.
+* **☰ (Drawer)**: Collapse the sidebar to maximize your workspace.
+* **Purge All History**: Instantly delete all locally saved chat JSON files from the system.
+* **Sessions Tab**: Click on any saved session to reload past conversations instantly.
+* **Status Bar**: Located in the header, monitoring **CPU**, **RAM**, and **TEMP** to prevent hardware thermal throttling.
 
 ---
 
-## ⚠️ **LEGAL DISCLAIMER & RESPONSIBLE USE**
+## ⚠️ **Legal Disclaimer & Responsible Use**
 
-**BY USING THIS SOFTWARE, YOU AGREE TO THE FOLLOWING:**
+**By using this software, you agree to the following terms:**
 
-1. **USER RESPONSIBILITY:** Any illegal, unethical, or harmful actions performed by the user through this chatbot or its generated code are the **sole responsibility of the user**.
-2. **NO CREATOR LIABILITY:** The creator of U-Bot Pro is **NOT RESPONSIBLE** for any misuse, data loss, hardware damage, or legal consequences.
-3. **PURPOSE:** This tool is provided strictly for **educational, security research, and developmental purposes**.
-4. **ETHICAL USE:** Users must comply with all local and international laws. Do not use this tool for unauthorized hacking or malware creation.
+1. **User Responsibility**: Any illegal, unethical, or harmful actions performed through this chatbot are the **sole responsibility of the user**.
+2. **No Creator Liability**: The creator of U-Bot Pro is **not liable** for any misuse, data loss, or legal consequences resulting from this tool.
+3. **Research Purpose**: This software is intended strictly for educational and security research purposes.
 
 ---
 
-*Built for the next generation of unrestricted AI interaction.*
+*Developed for the next generation of unrestricted AI interaction.*
