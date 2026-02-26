@@ -1,73 +1,71 @@
-# ⚡ **U-Bot Pro: Elite Unrestricted IUDE**
 
-**U-Bot Pro** is a high-performance Integrated Unrestricted Development Environment (IUDE) designed for power users and researchers. It provides a streamlined, glassmorphism-inspired interface for executing AI-generated logic with zero safety filters and real-time hardware telemetry.
+# U-Bot Pro | Elite IUDE (Standalone)
 
-## 🚀 **Key Features**
+U-Bot Pro is a fully offline, hardware-accelerated, and completely unrestricted AI assistant. Built as a portable Windows application, it requires **no installation, no internet connection, and zero external dependencies** to run. 
 
-* **Dual-Mode Persona Toggle**: Instant switching between **RESTRICTED** (Safe Mode - 🟢 Green) and **UNRESTRICTED** (Zero-filter - 🔴 Red).
-* **Adaptive Chat Logic**: Intelligent behavior that prioritizes natural conversation unless code is explicitly requested.
-* **Voice Interface (Mic)**: Hands-free interaction using integrated Speech-to-Text capabilities.
-* **Temporary Chat (Incognito)**: A dedicated "Temp Mode" that prevents chat history from being saved to the local disk.
-* **Ryzen Optimized Telemetry**: Real-time monitoring of CPU usage, RAM consumption, and Ryzen iGPU package temperatures.
-* **Void-Terminal**: A dedicated console for debugging, system logs, and background process tracking.
+Everything needed to chat, process code, and analyze data is bundled locally inside a single folder.
+
+## Features
+* **100% Offline & Portable:** The AI engine, Python environment, and UI are bundled into a single folder. Put it on a USB and run it on any Windows machine.
+* **Unrestricted Persona:** Built-in system overrides to bypass standard AI safety filters for raw, technical, and uncensored responses.
+* **Hardware Acceleration:** Auto-detects NVIDIA GPUs (optimized for 4GB VRAM cards like the GTX 1650) for lightning-fast text generation. Automatically falls back to CPU if no GPU is found.
+* **Smart Code Parsing:** Automatically detects Markdown code blocks, applies syntax highlighting, and provides one-click "Copy Code" buttons.
+* **Live System Monitoring:** Real-time, silent tracking of CPU, RAM, and NVIDIA GPU utilization directly in the header.
+* **Voice Integration:** Built-in microphone support for dictating commands.
+* **Session Management:** Save, load, or purge chat histories, or use "Temporary Chat" for zero-log sessions.
 
 ---
 
-## 🛠️ **Prerequisites & Installation**
+## System Requirements
+* **OS:** Windows 10 / Windows 11
+* **RAM:** 16GB Minimum (32GB Recommended for seamless multitasking)
+* **GPU:** NVIDIA GPU highly recommended (e.g., GTX 1650 or better). 
+* **Storage:** ~6GB+ free space (depending on the bundled `.gguf` model).
 
-### **1. System Requirements**
+---
 
-* **OS**: Windows 10/11 (Required for CustomTkinter UI scaling).
-* **Python**: Version 3.11 or 3.12 (Must be added to System PATH).
-* **Hardware**: 8GB RAM minimum; AMD Ryzen with iGPU supported for temperature tracking.
+## How to Run (For Users)
 
-### **2. Software Dependencies**
+If you downloaded the pre-compiled `.zip` release, you do not need to install Python or Ollama. 
 
-Install the core engine and required Python libraries via your terminal:
+1. Download the latest `U-Bot_Pro.zip` file from the Releases page.
+2. **Extract the entire folder** to your PC (e.g., to your Desktop or Documents). 
+3. Open the extracted `U-Bot` folder. Do **not** move the `.exe` out of this folder.
+4. Double-click **`U-Bot.exe`**.
+5. Wait for the Splash Screen to initialize the local server and load the AI into your RAM/VRAM (usually takes 5–15 seconds depending on your hardware).
+6. Start chatting!
 
-```bash
-# Core AI Engine
-ollama pull dolphin-llama3
+---
 
-# Python Libraries
-python -m pip install customtkinter ollama pillow psutil pyperclip WinTmp SpeechRecognition pyaudio
+## How to Build from Source (For Developers)
+
+If you are cloning this repository to build the executable yourself, follow these steps:
+
+### 1. Prerequisites
+* Python 3.11 installed.
+* Run: `pip install customtkinter ollama PyAudio SpeechRecognition psutil pyperclip pyinstaller`
+* Download the Windows version of `ollama.exe` and place it in the root project folder.
+
+### 2. Prepare the Local Model
+Because GitHub does not allow massive files, the AI model weights are not included in this repo.
+1. Create a folder named `models` in the root directory.
+2. Inside `models`, create two folders: `blobs` and `manifests`.
+3. Download your preferred GGUF model (e.g., Dolphin-Llama3 or Phi-3) via Hugging Face or a local Ollama pull, and place the raw model data into the `blobs` and `manifests` folders.
+
+### 3. Compile the Executable
+Delete any existing `build` or `dist` folders, then run the following PyInstaller command in your terminal:
+
+```powershell
+python -m PyInstaller --noconfirm --onedir --windowed --collect-all customtkinter --collect-all psutil --add-data "ollama.exe;." --add-data "models;models" "U-Bot.py"
 
 ```
 
----
+*(Note: You may need to manually point to your `customtkinter` site-packages directory in the `--add-data` flag depending on your specific Python environment).*
 
-## 🚦 **Getting Started (First Steps)**
-
-1. **Initialize Ollama**: Ensure the Ollama service is active in your system tray.
-2. **Permissions**: If **Temperature Tracking** shows "N/A" or "Locked," run your Terminal or VS Code as **Administrator**.
-3. **Launch**: Execute the main script:
-```bash
-python U-Bot.py
-
-```
-
-
-4. **Voice Activation**: Click the **🎙** icon to begin listening; the button will turn Red (⏳) while processing your voice.
+The final standalone application will be generated inside the `dist/U-Bot` folder.
 
 ---
 
-## 🖥️ **Navigation Guide**
+## Disclaimer
 
-* **☰ (Drawer)**: Collapse the sidebar to maximize your workspace.
-* **Purge All History**: Instantly delete all locally saved chat JSON files from the system.
-* **Sessions Tab**: Click on any saved session to reload past conversations instantly.
-* **Status Bar**: Located in the header, monitoring **CPU**, **RAM**, and **TEMP** to prevent hardware thermal throttling.
-
----
-
-## ⚠️ **Legal Disclaimer & Responsible Use**
-
-**By using this software, you agree to the following terms:**
-
-1. **User Responsibility**: Any illegal, unethical, or harmful actions performed through this chatbot are the **sole responsibility of the user**.
-2. **No Creator Liability**: The creator of U-Bot Pro is **not liable** for any misuse, data loss, or legal consequences resulting from this tool.
-3. **Research Purpose**: This software is intended strictly for educational and security research purposes.
-
----
-
-*Developed for the next generation of unrestricted AI interaction.*
+The "Unrestricted" persona bypasses standard AI safety protocols. This tool is designed strictly for advanced users, cybersecurity research, and unrestricted creative writing in an isolated, offline environment. The user is solely responsible for how they utilize the generated output.
